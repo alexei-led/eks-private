@@ -1,0 +1,44 @@
+# An example of ClusterConfig showing nodegroups with spot instances
+---
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: gaia-eks-g
+  region: us-west-2
+  version: 1.18
+
+vpc:
+  clusterEndpoints:
+    publicAccess:  true
+    privateAccess: true
+
+cloudWatch:
+  clusterLogging:
+    enableTypes: ["*"]
+
+managedNodeGroups:
+  - name: managed-arm
+    instanceType: t4g.small
+    minSize: 1
+    maxSize: 10
+    desiredCapacity: 1
+    volumeSize: 20
+    labels: {role: worker}
+    tags:
+      nodegroup-role: worker
+    iam:
+      withAddonPolicies:
+        imageBuilder: true
+        autoScaler: true
+        certManager: true
+        appMesh: true
+        ebs: true
+        fsx: true
+        efs: true
+        albIngress: true
+        xRay: true
+        cloudWatch: true
+    privateNetworking: true
+    instanceTypes: ["t4g.micro", "t4g.small", "t4g.medium"]
+    spot: true
