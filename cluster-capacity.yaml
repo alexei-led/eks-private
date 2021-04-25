@@ -4,9 +4,9 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: gaia-eks
+  name: capacity
   region: us-west-2
-  version: 1.18
+  version: "1.19"
 
 vpc:
   clusterEndpoints:
@@ -17,13 +17,14 @@ cloudWatch:
   clusterLogging:
     enableTypes: ["*"]
 
-managedNodeGroups:
-  - name: managed
-    instanceType: t3.small
+nodeGroups:
+  - name: m5-spot
     minSize: 1
     maxSize: 10
-    desiredCapacity: 1
+    instanceType: mixed
+    desiredCapacity: 5
     volumeSize: 20
+    volumeEncrypted: true
     labels: {role: worker}
     tags:
       nodegroup-role: worker
@@ -40,5 +41,10 @@ managedNodeGroups:
         xRay: true
         cloudWatch: true
     privateNetworking: true
-    instanceTypes: ["t3.micro", "t3.small", "t3.medium"]
-    spot: true
+    availabilityZones: ["us-west-2a", "us-west-2b", "us-west-2c"]
+    instancesDistribution:
+      onDemandPercentageAboveBaseCapacity: 0
+      maxPrice: 0.035
+      instanceTypes:
+        - m5.large
+      spotInstancePools: 4

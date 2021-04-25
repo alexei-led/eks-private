@@ -4,9 +4,9 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: gaia-eks
+  name: gaia-eks-g
   region: us-west-2
-  version: 1.18
+  version: "1.18"
 
 vpc:
   clusterEndpoints:
@@ -18,8 +18,7 @@ cloudWatch:
     enableTypes: ["*"]
 
 managedNodeGroups:
-  - name: managed
-    instanceType: t3.small
+  - name: managed-arm
     minSize: 1
     maxSize: 10
     desiredCapacity: 1
@@ -40,5 +39,5 @@ managedNodeGroups:
         xRay: true
         cloudWatch: true
     privateNetworking: true
-    instanceTypes: ["t3.micro", "t3.small", "t3.medium"]
+    instanceTypes: ["t4g.micro", "t4g.small", "t4g.medium"]
     spot: true
