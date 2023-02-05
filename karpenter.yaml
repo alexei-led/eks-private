@@ -1,0 +1,46 @@
+# Karpetner cluster with spot instances
+---
+kind: ClusterConfig
+apiVersion: eksctl.io/v1alpha5
+
+metadata:
+  name: karpetner-eks
+  region: us-west-2
+  version: "1.22"
+  tags:
+    karpenter.sh/discovery: karpetner-eks
+
+vpc:
+  clusterEndpoints:
+    publicAccess:  true
+    privateAccess: true
+
+iam:
+  withOIDC: true # required for karpetner-managed
+
+cloudWatch:
+  clusterLogging:
+    enableTypes: ["*"]
+    logRetentionInDays: 7
+
+karpenter:
+  version: '0.9.0'
+  createServiceAccount: true
+
+managedNodeGroups:
+  - name: karpetner-managed
+    minSize: 1
+    desiredCapacity: 1
+    privateNetworking: true
+    volumeSize: 20
+    labels: {role: controller}
+    tags:
+      nodegroup-role: controller
+    volumeType: gp3
+    spot: true
+    instanceTypes: ["t3.small", "t3.medium"]
+    iam:
+      withAddonPolicies:
+        ebs: true
+        albIngress: true
+        cloudWatch: true

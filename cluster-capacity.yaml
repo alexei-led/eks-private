@@ -4,7 +4,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: capacity
+  name: bomb
   region: us-west-2
   version: "1.19"
 
@@ -22,7 +22,7 @@ nodeGroups:
     minSize: 1
     maxSize: 10
     instanceType: mixed
-    desiredCapacity: 5
+    desiredCapacity: 2
     volumeSize: 20
     volumeEncrypted: true
     labels: {role: worker}
@@ -41,10 +41,9 @@ nodeGroups:
         xRay: true
         cloudWatch: true
     privateNetworking: true
-    availabilityZones: ["us-west-2a", "us-west-2b", "us-west-2c"]
+    availabilityZones: ["us-west-2b", "us-west-2d"]
     instancesDistribution:
       onDemandPercentageAboveBaseCapacity: 0
-      maxPrice: 0.035
+      maxPrice: 0.062
       instanceTypes:
         - m5.large
-      spotInstancePools: 4
