@@ -6,7 +6,7 @@ kind: ClusterConfig
 metadata:
   name: bomb
   region: us-west-2
-  version: "1.19"
+  version: "1.24"
 
 vpc:
   clusterEndpoints:
