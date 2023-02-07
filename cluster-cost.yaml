@@ -1,0 +1,82 @@
+# An example of ClusterConfig showing nodegroups with spot instances
+---
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: gaia-cost
+  region: us-west-2
+  version: "1.24"
+  tags:
+    experiment: kubecost
+
+vpc:
+  clusterEndpoints:
+    publicAccess:  true
+    privateAccess: true
+
+cloudWatch:
+  clusterLogging:
+    enableTypes: ["*"]
+    logRetentionInDays: 7
+
+fargateProfiles:
+  - name: fp-jobs
+    selectors:
+      # All workloads in the "jobs" Kubernetes namespace will be
+      # scheduled onto Fargate:
+      - namespace: jobs
+
+managedNodeGroups:
+  - name: managed-spot
+    amiFamily: Bottlerocket
+    minSize: 1
+    maxSize: 10
+    desiredCapacity: 1
+    volumeSize: 50
+    labels: {role: worker}
+    tags:
+      nodegroup-role: worker
+    iam:
+      withAddonPolicies:
+        imageBuilder: true
+        autoScaler: true
+        certManager: true
+        appMesh: true
+        ebs: true
+        fsx: true
+        efs: true
+        albIngress: true
+        xRay: true
+        cloudWatch: true
+    privateNetworking: true
+    instanceTypes: ["t4g.nano", "t4g.micro", "t4g.small", "t4g.medium", "t4g.large"]
+    spot: true
+
+  - name: managed-stable
+    amiFamily: Bottlerocket 
+    taints:
+      - key: stable
+        value: "true"
+        effect: NoSchedule
+    minSize: 0
+    maxSize: 10
+    desiredCapacity: 0
+    volumeSize: 50
+    labels: {role: worker}
+    tags:
+      nodegroup-role: worker
+    iam:
+      withAddonPolicies:
+        imageBuilder: true
+        autoScaler: true
+        certManager: true
+        appMesh: true
+        ebs: true
+        fsx: true
+        efs: true
+        albIngress: true
+        xRay: true
+        cloudWatch: true
+    privateNetworking: true
+    instanceTypes: ["t4g.nano", "t4g.micro", "t4g.small", "t4g.medium", "t4g.large"]
