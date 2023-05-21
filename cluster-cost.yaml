@@ -50,7 +50,7 @@ managedNodeGroups:
         xRay: true
         cloudWatch: true
     privateNetworking: true
-    instanceTypes: ["t4g.nano", "t4g.micro", "t4g.small", "t4g.medium", "t4g.large"]
+    instanceTypes: ["t4g.small", "t4g.medium", "t4g.large"]
     spot: true
 
   - name: managed-stable
@@ -79,4 +79,4 @@ managedNodeGroups:
         xRay: true
         cloudWatch: true
     privateNetworking: true
-    instanceTypes: ["t4g.nano", "t4g.micro", "t4g.small", "t4g.medium", "t4g.large"]
+    instanceTypes: ["t4g.small", "t4g.medium", "t4g.large"]
