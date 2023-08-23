@@ -4,7 +4,7 @@ metadata:
   name: hello
   namespace: fargate
 spec:
-  schedule: "*/10 * * * *"
+  schedule: "*/5 * * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   jobTemplate:
