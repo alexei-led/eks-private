@@ -6,7 +6,7 @@ kind: ClusterConfig
 metadata:
   name: gaia-eks-g
   region: us-west-2
-  version: "1.24"
+  version: "1.27"
 
 vpc:
   clusterEndpoints:
